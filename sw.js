@@ -1,11 +1,11 @@
 // NoteZ Service Worker
 const CACHE_NAME = 'notez-cache-v1';
 const URLS_TO_CACHE = [
-    '/NoteZ/',
-    '/NoteZ/index.html',
-    '/NoteZ/app.js',
-    '/NoteZ/manifest.json',
-    '/NoteZ/sw.js'
+    '/Notee/',
+    '/Notee/index.html',
+    '/Notee/app.js',
+    '/Notee/manifest.json',
+    '/Notee/sw.js'
 ];
 
 // Install event - cache assets
@@ -94,7 +94,7 @@ self.addEventListener('fetch', (event) => {
                 // Return a fallback response for failed requests
                 if (request.mode === 'navigate') {
                     // Return cached index.html for navigation requests
-                    return caches.match('/NoteZ/index.html');
+                    return caches.match('/Notee/index.html');
                 }
 
                 // Return offline message for other requests
@@ -142,8 +142,8 @@ self.addEventListener('sync', (event) => {
 self.addEventListener('push', (event) => {
     const options = {
         body: event.data?.text() || 'NoteZ notification',
-        icon: '/NoteZ/icon.png',
-        badge: '/NoteZ/badge.png',
+        icon: '/Notee/icon.png',
+        badge: '/Notee/badge.png',
         tag: 'notez-notification',
         requireInteraction: false
     };
@@ -162,13 +162,13 @@ self.addEventListener('notificationclick', (event) => {
             // Check if there's already a window with the app open
             for (let i = 0; i < windowClients.length; i++) {
                 const client = windowClients[i];
-                if (client.url === '/NoteZ/' && 'focus' in client) {
+                if (client.url === '/Notee/' && 'focus' in client) {
                     return client.focus();
                 }
             }
             // If not, open a new window
             if (clients.openWindow) {
-                return clients.openWindow('/NoteZ/');
+                return clients.openWindow('/Notee/');
             }
         })
     );
