@@ -5,12 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#a900ff">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="NoteZ">
     <link rel="manifest" href="manifest.json">
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'><rect fill='%23a900ff' width='180' height='180'/><text x='50%' y='50%' font-size='100' font-weight='bold' fill='white' text-anchor='middle' dominant-baseline='central'>Z</text></svg>">
-    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'><rect fill='%23a900ff' width='180' height='180' rx='40'/><text x='50%' y='50%' font-size='100' font-weight='bold' fill='white' text-anchor='middle' dominant-baseline='central'>Z</text></svg>">
     <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <title>NoteZ - Advanced Note Taking</title>
     <style>
         :root {
             --accent: #a900ff;
@@ -21,34 +18,32 @@
             --text-primary: #e8e8f0;
             --text-secondary: #a8a8b0;
             --border: #2e2e38;
-            --border-light: rgba(232, 232, 240, 0.1);
             --success: #10b981;
             --warning: #f59e0b;
             --danger: #ef4444;
+            --info: #3b82f6;
         }
 
         [data-theme="light"] {
             --accent: #6b5ce7;
-            --accent-glow: rgba(107, 92, 231, 0.3);
-            --bg-primary: #f5f4f8;
-            --bg-secondary: #eeebf8;
-            --bg-tertiary: #e5e0f5;
+            --accent-glow: rgba(107, 92, 231, 0.2);
+            --bg-primary: #f9f8fb;
+            --bg-secondary: #f0ecf8;
+            --bg-tertiary: #e8e0f5;
             --text-primary: #1a1a1a;
             --text-secondary: #666666;
             --border: #d4d0e0;
-            --border-light: rgba(26, 26, 26, 0.08);
         }
 
         [data-theme="navy"] {
             --accent: #4d9fff;
-            --accent-glow: rgba(77, 159, 255, 0.3);
+            --accent-glow: rgba(77, 159, 255, 0.2);
             --bg-primary: #0a0f1e;
             --bg-secondary: #0f1629;
             --bg-tertiary: #1a1f35;
             --text-primary: #e0e8ff;
             --text-secondary: #8fa3bf;
             --border: #253859;
-            --border-light: rgba(224, 232, 255, 0.08);
         }
 
         * {
@@ -67,10 +62,9 @@
             background: var(--bg-primary);
             color: var(--text-primary);
             overflow: hidden;
-            transition: background 0.3s cubic-bezier(.4, 0, .2, 1);
+            transition: background 0.3s, color 0.3s;
         }
 
-        /* Scrollbar Styling */
         ::-webkit-scrollbar {
             width: 8px;
             height: 8px;
@@ -90,7 +84,7 @@
             opacity: 0.9;
         }
 
-        /* Loading Overlay */
+        /* Loading */
         #app-loading {
             position: fixed;
             inset: 0;
@@ -100,7 +94,7 @@
             justify-content: center;
             z-index: 9999;
             opacity: 1;
-            transition: opacity 0.4s cubic-bezier(.4, 0, .2, 1);
+            transition: opacity 0.4s;
         }
 
         #app-loading.hidden {
@@ -109,25 +103,25 @@
         }
 
         .logo-animation {
-            font-size: 64px;
+            font-size: 80px;
             font-weight: 800;
-            background: linear-gradient(135deg, var(--accent) 0%, #ff00cc 100%);
+            background: linear-gradient(135deg, var(--accent), #ff00cc);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            animation: pulse 2s ease-in-out infinite;
+            animation: pulse 2s infinite;
         }
 
         @keyframes pulse {
-            0%, 100% { opacity: 0.8; transform: scale(1); }
-            50% { opacity: 1; transform: scale(1.05); }
+            0%, 100% { opacity: 0.7; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.08); }
         }
 
-        /* Auth Screen */
+        /* Auth */
         #auth-screen {
             position: fixed;
             inset: 0;
-            background: var(--bg-primary);
+            background: linear-gradient(135deg, var(--bg-primary), var(--bg-secondary));
             display: flex;
             align-items: center;
             justify-content: center;
@@ -141,83 +135,78 @@
         .auth-card {
             background: var(--bg-secondary);
             border: 1px solid var(--border);
-            backdrop-filter: blur(10px);
-            border-radius: 10px;
-            padding: 40px;
-            max-width: 400px;
+            backdrop-filter: blur(20px);
+            border-radius: 16px;
+            padding: 50px;
+            max-width: 450px;
             width: 90%;
-            box-shadow: 0 8px 32px var(--accent-glow);
+            box-shadow: 0 20px 60px var(--accent-glow);
         }
 
         .auth-logo {
-            font-size: 48px;
-            font-weight: 800;
+            font-size: 56px;
+            font-weight: 900;
             text-align: center;
             margin-bottom: 30px;
-            background: linear-gradient(135deg, var(--accent) 0%, #ff00cc 100%);
+            background: linear-gradient(135deg, var(--accent), #ff00cc);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            letter-spacing: -2px;
         }
 
         .auth-title {
-            font-size: 24px;
+            font-size: 28px;
             font-weight: 700;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
             text-align: center;
         }
 
         .auth-subtitle {
             color: var(--text-secondary);
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 35px;
             font-size: 14px;
+            line-height: 1.5;
         }
 
         .auth-tabs {
             display: flex;
-            gap: 10px;
-            margin-bottom: 25px;
+            gap: 12px;
+            margin-bottom: 30px;
             background: var(--bg-tertiary);
-            padding: 4px;
-            border-radius: 8px;
+            padding: 6px;
+            border-radius: 10px;
         }
 
         .auth-tab {
             flex: 1;
-            padding: 10px;
+            padding: 12px;
             border: none;
             background: transparent;
             color: var(--text-secondary);
             cursor: pointer;
             font-weight: 600;
-            border-radius: 6px;
-            transition: all 0.2s;
+            border-radius: 8px;
+            transition: all 0.3s;
             font-family: 'Syne', sans-serif;
         }
 
         .auth-tab.active {
             background: var(--accent);
             color: white;
-        }
-
-        .auth-form {
-            display: none;
-        }
-
-        .auth-form.active {
-            display: block;
+            box-shadow: 0 4px 12px var(--accent-glow);
         }
 
         .form-group {
-            margin-bottom: 15px;
+            margin-bottom: 18px;
         }
 
         .form-group label {
             display: block;
             font-size: 12px;
             font-weight: 600;
-            margin-bottom: 6px;
+            margin-bottom: 8px;
             color: var(--text-secondary);
             text-transform: uppercase;
             letter-spacing: 0.5px;
@@ -225,39 +214,42 @@
 
         .form-group input {
             width: 100%;
-            padding: 12px;
+            padding: 14px 16px;
             background: var(--bg-tertiary);
-            border: 1px solid var(--border);
-            border-radius: 6px;
+            border: 1.5px solid var(--border);
+            border-radius: 8px;
             color: var(--text-primary);
             font-family: 'Syne', sans-serif;
-            transition: all 0.2s;
+            transition: all 0.3s;
+            font-size: 15px;
         }
 
         .form-group input:focus {
             outline: none;
             border-color: var(--accent);
             box-shadow: 0 0 0 3px var(--accent-glow);
+            background: var(--bg-secondary);
         }
 
         .auth-button {
             width: 100%;
-            padding: 12px;
+            padding: 14px;
             background: var(--accent);
             color: white;
             border: none;
-            border-radius: 6px;
+            border-radius: 8px;
             font-weight: 700;
-            font-size: 14px;
+            font-size: 15px;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.3s;
             font-family: 'Syne', sans-serif;
-            margin-top: 10px;
+            margin-top: 15px;
+            box-shadow: 0 8px 20px var(--accent-glow);
         }
 
         .auth-button:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 16px var(--accent-glow);
+            box-shadow: 0 12px 30px var(--accent-glow);
         }
 
         .auth-button:active {
@@ -268,16 +260,14 @@
         #app {
             display: flex;
             height: 100vh;
-            gap: 0;
         }
 
         #app.hidden {
             display: none;
         }
 
-        /* Sidebar */
         .sidebar {
-            width: 260px;
+            width: 280px;
             background: var(--bg-secondary);
             border-right: 1px solid var(--border);
             display: flex;
@@ -288,13 +278,13 @@
         }
 
         .sidebar-header {
-            padding: 20px;
+            padding: 24px 20px;
             border-bottom: 1px solid var(--border);
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 14px;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.3s;
         }
 
         .sidebar-header:hover {
@@ -302,59 +292,100 @@
         }
 
         .user-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--accent) 0%, #ff00cc 100%);
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, var(--accent), #ff00cc);
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
             font-weight: 700;
             font-size: 18px;
+            flex-shrink: 0;
         }
 
         .user-info {
             flex: 1;
+            min-width: 0;
         }
 
         .user-name {
             font-size: 14px;
-            font-weight: 600;
+            font-weight: 700;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .user-email {
             font-size: 12px;
             color: var(--text-secondary);
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .search-box {
+            margin: 16px;
+            position: relative;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 10px 14px 10px 38px;
+            background: var(--bg-tertiary);
+            border: 1.5px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-family: 'Syne', sans-serif;
+            font-size: 13px;
+            transition: all 0.3s;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-glow);
+        }
+
+        .search-box::before {
+            content: '🔍';
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 14px;
+            opacity: 0.5;
         }
 
         .folders-section {
-            padding: 20px;
+            padding: 12px;
             flex: 1;
             overflow-y: auto;
         }
 
-        .folders-title {
-            font-size: 12px;
+        .section-label {
+            font-size: 11px;
             font-weight: 700;
             color: var(--text-secondary);
             text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 12px;
-            padding: 0 8px;
+            letter-spacing: 0.7px;
+            margin: 16px 12px 8px;
+            padding: 0 4px;
         }
 
         .folder-item {
-            padding: 10px 8px;
+            padding: 10px 12px;
             margin-bottom: 4px;
-            border-radius: 6px;
+            border-radius: 8px;
             cursor: pointer;
             transition: all 0.2s;
-            font-size: 14px;
+            font-size: 13px;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
             color: var(--text-secondary);
+            position: relative;
+            group: "folder";
         }
 
         .folder-item:hover {
@@ -368,52 +399,71 @@
             font-weight: 600;
         }
 
+        .folder-icon {
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+
+        .folder-name {
+            flex: 1;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
         .folder-count {
-            font-size: 12px;
+            font-size: 11px;
             color: var(--text-secondary);
-            margin-left: auto;
+            background: var(--bg-tertiary);
+            padding: 2px 6px;
+            border-radius: 4px;
         }
 
         .sidebar-footer {
-            padding: 20px;
+            padding: 16px;
             border-top: 1px solid var(--border);
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 8px;
         }
 
         .btn {
-            padding: 10px 16px;
+            padding: 11px 16px;
             border: none;
-            border-radius: 6px;
+            border-radius: 8px;
             cursor: pointer;
             font-weight: 600;
             font-size: 13px;
             transition: all 0.2s;
             font-family: 'Syne', sans-serif;
+            text-align: center;
         }
 
         .btn-primary {
             background: var(--accent);
             color: white;
-            width: 100%;
+            box-shadow: 0 4px 12px var(--accent-glow);
         }
 
         .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 16px var(--accent-glow);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px var(--accent-glow);
         }
 
         .btn-ghost {
             background: transparent;
             color: var(--text-secondary);
-            border: 1px solid var(--border);
-            width: 100%;
+            border: 1.5px solid var(--border);
         }
 
         .btn-ghost:hover {
             background: var(--bg-tertiary);
             color: var(--text-primary);
+        }
+
+        .btn-small {
+            padding: 8px 12px;
+            font-size: 12px;
         }
 
         /* Main Content */
@@ -426,30 +476,47 @@
         }
 
         .header {
-            padding: 20px;
+            padding: 20px 28px;
             border-bottom: 1px solid var(--border);
             display: flex;
             justify-content: space-between;
             align-items: center;
             background: var(--bg-secondary);
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
         }
 
         .header-title {
             font-size: 24px;
             font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .header-stats {
+            font-size: 12px;
+            color: var(--text-secondary);
+            padding: 6px 12px;
+            background: var(--bg-tertiary);
+            border-radius: 6px;
         }
 
         .header-actions {
             display: flex;
-            gap: 12px;
+            gap: 10px;
             align-items: center;
         }
 
         .btn-icon {
             width: 40px;
             height: 40px;
-            border-radius: 6px;
-            border: 1px solid var(--border);
+            border-radius: 8px;
+            border: 1.5px solid var(--border);
             background: var(--bg-tertiary);
             color: var(--text-primary);
             cursor: pointer;
@@ -463,29 +530,30 @@
         .btn-icon:hover {
             background: var(--accent);
             border-color: var(--accent);
+            color: white;
+            transform: scale(1.05);
         }
 
-        /* Content Area */
         .content {
             flex: 1;
             overflow-y: auto;
-            padding: 30px;
+            padding: 28px;
             position: relative;
         }
 
         .view {
             display: none;
+            animation: fadeIn 0.3s ease-out;
         }
 
         .view.active {
             display: block;
-            animation: fadeIn 0.3s cubic-bezier(.4, 0, .2, 1);
         }
 
         @keyframes fadeIn {
             from {
                 opacity: 0;
-                transform: translateY(10px);
+                transform: translateY(8px);
             }
             to {
                 opacity: 1;
@@ -493,43 +561,27 @@
             }
         }
 
-        /* Library View */
+        /* Library Grid */
         .library-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 24px;
             margin-bottom: 40px;
-        }
-
-        .library-section {
-            margin-bottom: 40px;
-        }
-
-        .library-title {
-            font-size: 32px;
-            font-weight: 800;
-            margin-bottom: 20px;
-            color: var(--text-primary);
-        }
-
-        .library-subtitle {
-            font-size: 13px;
-            color: var(--text-secondary);
-            margin-bottom: 20px;
         }
 
         .note-card {
             background: var(--bg-secondary);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            padding: 20px;
+            border: 1.5px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
             cursor: pointer;
-            transition: all 0.2s cubic-bezier(.4, 0, .2, 1);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             display: flex;
             flex-direction: column;
             position: relative;
             overflow: hidden;
-            min-height: 180px;
+            min-height: 200px;
+            group: "card";
         }
 
         .note-card::before {
@@ -538,73 +590,178 @@
             top: 0;
             left: 0;
             right: 0;
-            height: 3px;
+            height: 4px;
             background: linear-gradient(90deg, var(--accent), #ff00cc);
-            opacity: 0;
-            transition: opacity 0.2s;
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s;
         }
 
         .note-card:hover {
             border-color: var(--accent);
-            transform: translateY(-4px);
-            box-shadow: 0 12px 24px var(--accent-glow);
+            transform: translateY(-6px);
+            box-shadow: 0 16px 40px var(--accent-glow);
             background: var(--bg-tertiary);
         }
 
         .note-card:hover::before {
-            opacity: 1;
+            transform: scaleX(1);
         }
 
         .note-card-icon {
-            font-size: 32px;
-            margin-bottom: 12px;
+            font-size: 40px;
+            margin-bottom: 14px;
         }
 
         .note-card-title {
             font-size: 16px;
-            font-weight: 600;
+            font-weight: 700;
             margin-bottom: 8px;
             color: var(--text-primary);
+            line-height: 1.3;
         }
 
-        .note-card-subtitle {
-            font-size: 13px;
-            color: var(--text-secondary);
-        }
-
-        .note-card-count {
+        .note-card-meta {
             font-size: 12px;
             color: var(--text-secondary);
             margin-top: auto;
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            gap: 4px;
+            gap: 8px;
         }
 
-        /* Notes List View */
+        /* Editor */
+        .editor-container {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            gap: 0;
+        }
+
+        .editor-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border);
+            background: var(--bg-secondary);
+            border-radius: 12px 12px 0 0;
+        }
+
+        .editor-title-input {
+            font-size: 24px;
+            font-weight: 700;
+            background: transparent;
+            border: none;
+            color: var(--text-primary);
+            font-family: 'Syne', sans-serif;
+            width: 100%;
+            outline: none;
+        }
+
+        .editor-toolbar {
+            display: flex;
+            gap: 8px;
+            padding: 16px 24px;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border);
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .toolbar-group {
+            display: flex;
+            gap: 4px;
+            padding: 0 8px;
+            border-right: 1px solid var(--border);
+        }
+
+        .toolbar-group:last-child {
+            border-right: none;
+        }
+
+        .toolbar-btn {
+            padding: 8px 12px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            cursor: pointer;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            transition: all 0.2s;
+            font-family: 'Syne', sans-serif;
+        }
+
+        .toolbar-btn:hover {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
+        }
+
+        .editor-area {
+            flex: 1;
+            background: var(--bg-secondary);
+            border: none;
+            padding: 24px;
+            font-family: 'DM Mono', monospace;
+            color: var(--text-primary);
+            overflow-y: auto;
+            outline: none;
+            resize: none;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .editor-footer {
+            padding: 16px 24px;
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 0 0 12px 12px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .editor-status {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .editor-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        /* Notes List */
         .notes-list {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 16px;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
         }
 
         .note-item {
             background: var(--bg-secondary);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            padding: 16px;
+            border: 1.5px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.3s;
             display: flex;
             flex-direction: column;
             gap: 12px;
-            min-height: 140px;
+            min-height: 160px;
+            position: relative;
         }
 
         .note-item:hover {
             border-color: var(--accent);
             background: var(--bg-tertiary);
-            transform: translateY(-2px);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 28px var(--accent-glow);
         }
 
         .note-item-header {
@@ -614,138 +771,117 @@
         }
 
         .note-item-icon {
-            font-size: 24px;
+            font-size: 28px;
             flex-shrink: 0;
         }
 
         .note-item-title {
-            font-size: 14px;
-            font-weight: 600;
+            font-size: 15px;
+            font-weight: 700;
             color: var(--text-primary);
+            line-height: 1.3;
         }
 
-        .note-item-content {
+        .note-item-preview {
             font-size: 13px;
             color: var(--text-secondary);
             line-height: 1.4;
             flex: 1;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
         }
 
-        .note-item-meta {
+        .note-item-footer {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 12px;
+            font-size: 11px;
             color: var(--text-secondary);
+            margin-top: auto;
+            padding-top: 12px;
+            border-top: 1px solid var(--border);
         }
 
-        /* Editor View */
-        .editor-container {
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-            gap: 16px;
-        }
-
-        .editor-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding-bottom: 16px;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .editor-title {
-            font-size: 24px;
-            font-weight: 700;
-        }
-
-        .editor-actions {
-            display: flex;
-            gap: 10px;
-        }
-
-        .editor-area {
-            flex: 1;
-            background: var(--bg-secondary);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            padding: 20px;
-            font-family: 'DM Mono', monospace;
-            color: var(--text-primary);
-            overflow-y: auto;
-            outline: none;
-            resize: none;
-        }
-
-        .editor-area:focus {
-            border-color: var(--accent);
-            box-shadow: 0 0 0 3px var(--accent-glow);
-        }
-
-        /* Upload View */
+        /* Upload Zone */
         .upload-container {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            min-height: 400px;
+            min-height: 500px;
             padding: 40px;
         }
 
         .upload-zone {
             width: 100%;
-            max-width: 500px;
-            border: 2px dashed var(--border);
-            border-radius: 10px;
-            padding: 60px 20px;
+            max-width: 600px;
+            border: 2.5px dashed var(--border);
+            border-radius: 16px;
+            padding: 80px 40px;
             text-align: center;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.3s;
             background: var(--bg-secondary);
         }
 
         .upload-zone:hover {
             border-color: var(--accent);
             background: var(--bg-tertiary);
+            transform: translateY(-2px);
         }
 
         .upload-zone.dragover {
             border-color: var(--accent);
             background: var(--accent-glow);
+            transform: scale(1.02);
         }
 
         .upload-icon {
-            font-size: 48px;
-            margin-bottom: 16px;
-            color: var(--accent);
+            font-size: 64px;
+            margin-bottom: 20px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
         }
 
         .upload-title {
-            font-size: 18px;
+            font-size: 20px;
             font-weight: 700;
-            margin-bottom: 8px;
+            margin-bottom: 12px;
         }
 
         .upload-subtitle {
-            font-size: 13px;
+            font-size: 14px;
             color: var(--text-secondary);
+            margin-bottom: 20px;
+        }
+
+        .upload-hint {
+            font-size: 12px;
+            color: var(--text-secondary);
+            opacity: 0.7;
         }
 
         #upload-input {
             display: none;
         }
 
-        /* Settings Modal */
+        /* Modal */
         .modal-overlay {
             position: fixed;
             inset: 0;
-            background: rgba(0, 0, 0, 0.6);
+            background: rgba(0, 0, 0, 0.7);
             display: flex;
             align-items: center;
             justify-content: center;
             z-index: 2000;
-            backdrop-filter: blur(4px);
+            backdrop-filter: blur(6px);
         }
 
         .modal-overlay.hidden {
@@ -754,28 +890,41 @@
 
         .modal {
             background: var(--bg-secondary);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            padding: 30px;
-            max-width: 400px;
+            border: 1.5px solid var(--border);
+            border-radius: 16px;
+            padding: 40px;
+            max-width: 500px;
             width: 90%;
-            max-height: 90vh;
+            max-height: 85vh;
             overflow-y: auto;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+            animation: slideUp 0.3s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .modal-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 25px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid var(--border);
+            margin-bottom: 28px;
+            padding-bottom: 18px;
+            border-bottom: 1.5px solid var(--border);
         }
 
         .modal-title {
-            font-size: 20px;
+            font-size: 22px;
             font-weight: 700;
+            letter-spacing: -0.5px;
         }
 
         .modal-close {
@@ -783,25 +932,32 @@
             border: none;
             color: var(--text-secondary);
             cursor: pointer;
-            font-size: 24px;
+            font-size: 28px;
             transition: all 0.2s;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
         }
 
         .modal-close:hover {
             color: var(--text-primary);
+            background: var(--bg-tertiary);
         }
 
         .settings-group {
-            margin-bottom: 25px;
+            margin-bottom: 28px;
         }
 
         .settings-label {
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.6px;
             color: var(--text-secondary);
-            margin-bottom: 12px;
+            margin-bottom: 14px;
             display: block;
         }
 
@@ -812,14 +968,14 @@
 
         .theme-btn {
             flex: 1;
-            padding: 10px;
+            padding: 12px;
             border: 2px solid var(--border);
-            border-radius: 6px;
+            border-radius: 8px;
             background: var(--bg-tertiary);
             color: var(--text-primary);
             cursor: pointer;
             font-weight: 600;
-            font-size: 12px;
+            font-size: 13px;
             transition: all 0.2s;
             font-family: 'Syne', sans-serif;
         }
@@ -833,7 +989,7 @@
         .slider-container {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 14px;
         }
 
         .slider {
@@ -849,114 +1005,112 @@
         .slider::-webkit-slider-thumb {
             -webkit-appearance: none;
             appearance: none;
-            width: 18px;
-            height: 18px;
+            width: 20px;
+            height: 20px;
             border-radius: 50%;
             background: var(--accent);
             cursor: pointer;
-            transition: all 0.2s;
+            box-shadow: 0 2px 8px var(--accent-glow);
         }
 
         .slider::-moz-range-thumb {
-            width: 18px;
-            height: 18px;
+            width: 20px;
+            height: 20px;
             border-radius: 50%;
             background: var(--accent);
             cursor: pointer;
             border: none;
-            transition: all 0.2s;
+            box-shadow: 0 2px 8px var(--accent-glow);
         }
 
         .slider-value {
-            font-size: 12px;
+            font-size: 13px;
             color: var(--text-secondary);
-            min-width: 35px;
-        }
-
-        .toggle {
-            display: flex;
-            align-items: center;
-            gap: 12px;
+            min-width: 40px;
+            font-weight: 600;
         }
 
         .toggle-switch {
-            position: relative;
-            width: 50px;
-            height: 28px;
+            width: 52px;
+            height: 30px;
             background: var(--bg-tertiary);
-            border-radius: 14px;
+            border-radius: 15px;
             cursor: pointer;
-            transition: background 0.2s;
+            transition: background 0.3s;
+            position: relative;
+            border: 1.5px solid var(--border);
         }
 
         .toggle-switch.active {
             background: var(--accent);
+            border-color: var(--accent);
         }
 
         .toggle-switch::after {
             content: '';
             position: absolute;
-            top: 3px;
+            top: 2px;
             left: 3px;
-            width: 22px;
-            height: 22px;
+            width: 24px;
+            height: 24px;
             background: white;
             border-radius: 50%;
-            transition: left 0.2s;
+            transition: left 0.3s;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
         }
 
         .toggle-switch.active::after {
-            left: 25px;
+            left: 23px;
         }
 
-        /* Toast Notifications */
+        /* Toast */
         .toast-container {
             position: fixed;
-            bottom: 20px;
-            right: 20px;
+            bottom: 24px;
+            right: 24px;
             z-index: 3000;
             display: flex;
             flex-direction: column;
-            gap: 10px;
-            max-width: 350px;
+            gap: 12px;
+            max-width: 380px;
         }
 
         .toast {
             background: var(--bg-secondary);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 16px;
+            border: 1.5px solid var(--border);
+            border-radius: 10px;
+            padding: 16px 20px;
             display: flex;
             align-items: center;
-            gap: 12px;
-            animation: slideIn 0.3s cubic-bezier(.4, 0, .2, 1);
-            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+            gap: 14px;
+            animation: slideInRight 0.3s ease-out;
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3);
         }
 
-        @keyframes slideIn {
+        @keyframes slideInRight {
             from {
-                transform: translateX(400px);
                 opacity: 0;
+                transform: translateX(400px);
             }
             to {
-                transform: translateX(0);
                 opacity: 1;
+                transform: translateX(0);
             }
         }
 
-        @keyframes slideOut {
+        @keyframes slideOutRight {
             from {
-                transform: translateX(0);
                 opacity: 1;
+                transform: translateX(0);
             }
             to {
-                transform: translateX(400px);
                 opacity: 0;
+                transform: translateX(400px);
             }
         }
 
         .toast.removing {
-            animation: slideOut 0.3s cubic-bezier(.4, 0, .2, 1);
+            animation: slideOutRight 0.3s ease-out;
         }
 
         .toast-icon {
@@ -969,8 +1123,9 @@
         }
 
         .toast-title {
-            font-weight: 600;
+            font-weight: 700;
             font-size: 14px;
+            margin-bottom: 2px;
         }
 
         .toast-message {
@@ -978,114 +1133,203 @@
             color: var(--text-secondary);
         }
 
-        .toast.success .toast-icon {
-            color: var(--success);
+        .toast.success { border-color: var(--success); }
+        .toast.success .toast-icon { color: var(--success); }
+
+        .toast.warning { border-color: var(--warning); }
+        .toast.warning .toast-icon { color: var(--warning); }
+
+        .toast.danger { border-color: var(--danger); }
+        .toast.danger .toast-icon { color: var(--danger); }
+
+        .toast.info { border-color: var(--info); }
+        .toast.info .toast-icon { color: var(--info); }
+
+        /* Context Menu */
+        .context-menu {
+            position: fixed;
+            background: var(--bg-secondary);
+            border: 1.5px solid var(--border);
+            border-radius: 10px;
+            min-width: 180px;
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3);
+            z-index: 3001;
+            display: none;
+            animation: slideUp 0.2s ease-out;
         }
 
-        .toast.warning .toast-icon {
-            color: var(--warning);
+        .context-menu.show {
+            display: block;
         }
 
-        .toast.danger .toast-icon {
+        .context-menu-item {
+            padding: 12px 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+            background: none;
+            color: var(--text-primary);
+            width: 100%;
+            text-align: left;
+            font-family: 'Syne', sans-serif;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .context-menu-item:hover {
+            background: var(--bg-tertiary);
+            color: var(--accent);
+        }
+
+        .context-menu-item.danger:hover {
             color: var(--danger);
+        }
+
+        .context-menu-divider {
+            height: 1px;
+            background: var(--border);
+            margin: 4px 0;
+        }
+
+        /* Empty State */
+        .empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 400px;
+            text-align: center;
+            color: var(--text-secondary);
+        }
+
+        .empty-icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+
+        .empty-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .empty-message {
+            font-size: 14px;
+            line-height: 1.5;
+            max-width: 300px;
         }
 
         /* Responsive */
         @media (max-width: 768px) {
-            #app {
-                flex-direction: column;
-            }
-
             .sidebar {
-                width: 100%;
-                max-height: 40vh;
-                border-right: none;
-                border-bottom: 1px solid var(--border);
-                display: none;
+                position: fixed;
+                left: 0;
+                top: 0;
+                height: 100vh;
+                width: 280px;
+                transform: translateX(-100%);
+                transition: transform 0.3s;
+                z-index: 500;
             }
 
             .sidebar.mobile-open {
-                display: flex;
+                transform: translateX(0);
+            }
+
+            .header {
+                padding: 16px;
+                gap: 12px;
+            }
+
+            .header-title {
+                font-size: 20px;
+            }
+
+            .content {
+                padding: 16px;
             }
 
             .library-grid {
                 grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+                gap: 16px;
+            }
+
+            .note-card {
+                padding: 16px;
+                min-height: 160px;
             }
 
             .notes-list {
                 grid-template-columns: 1fr;
             }
 
-            .content {
-                padding: 20px;
+            .modal {
+                padding: 30px;
+                max-width: 90%;
             }
 
             .auth-card {
-                padding: 30px;
+                padding: 35px 25px;
+                max-width: 95%;
             }
         }
 
-        /* Utility */
         .hidden {
             display: none !important;
-        }
-
-        body.no-scroll {
-            overflow: hidden;
         }
     </style>
 </head>
 <body>
-    <!-- Loading Overlay -->
     <div id="app-loading">
         <div class="logo-animation">Z</div>
     </div>
 
-    <!-- Auth Screen -->
     <div id="auth-screen">
         <div class="auth-card">
             <div class="auth-logo">NoteZ</div>
             <div class="auth-title" id="auth-title">Welcome Back</div>
-            <div class="auth-subtitle">Your personal HTML notes workspace</div>
+            <div class="auth-subtitle">Advanced note-taking workspace for everyone</div>
 
             <div class="auth-tabs">
                 <button class="auth-tab active" data-tab="login">Sign In</button>
-                <button class="auth-tab" data-tab="signup">Sign Up</button>
+                <button class="auth-tab" data-tab="signup">Create Account</button>
             </div>
 
             <form id="login-form" class="auth-form active">
                 <div class="form-group">
                     <label>Username or Email</label>
-                    <input type="text" id="login-username" placeholder="Enter your username" required>
+                    <input type="text" id="login-username" placeholder="your@email.com" required>
                 </div>
                 <div class="form-group">
                     <label>Password</label>
-                    <input type="password" id="login-password" placeholder="Enter your password" required>
+                    <input type="password" id="login-password" placeholder="••••••••" required>
                 </div>
                 <button type="submit" class="auth-button">Sign In →</button>
             </form>
 
             <form id="signup-form" class="auth-form">
                 <div class="form-group">
-                    <label>Username</label>
-                    <input type="text" id="signup-username" placeholder="Choose a username" required>
+                    <label>Full Name</label>
+                    <input type="text" id="signup-name" placeholder="John Doe" required>
                 </div>
                 <div class="form-group">
                     <label>Email</label>
-                    <input type="email" id="signup-email" placeholder="Enter your email" required>
+                    <input type="email" id="signup-email" placeholder="your@email.com" required>
                 </div>
                 <div class="form-group">
                     <label>Password</label>
-                    <input type="password" id="signup-password" placeholder="Create a password" required>
+                    <input type="password" id="signup-password" placeholder="••••••••" required>
                 </div>
-                <button type="submit" class="auth-button">Sign Up →</button>
+                <button type="submit" class="auth-button">Create Account →</button>
             </form>
         </div>
     </div>
 
-    <!-- Main App -->
     <div id="app" class="hidden">
-        <!-- Sidebar -->
         <div class="sidebar">
             <div class="sidebar-header" id="user-profile">
                 <div class="user-avatar" id="user-avatar">S</div>
@@ -1095,71 +1339,111 @@
                 </div>
             </div>
 
+            <div class="search-box">
+                <input type="text" id="search-input" placeholder="Search notes...">
+            </div>
+
             <div class="folders-section">
-                <div class="folders-title">📁 Folders</div>
+                <div class="section-label">💼 Your Folders</div>
                 <div id="folders-list"></div>
-                <button class="btn btn-ghost" id="new-folder-btn" style="margin-top: 10px;">+ New Folder</button>
+                <button class="btn btn-ghost btn-small" id="new-folder-btn" style="margin-top: 8px; width: 100%;">+ New Folder</button>
+
+                <div class="section-label" style="margin-top: 24px;">📌 Quick Access</div>
+                <div class="folder-item" id="all-notes-btn">
+                    <span class="folder-icon">⭐</span>
+                    <span class="folder-name">All Notes</span>
+                    <span class="folder-count" id="all-notes-count">0</span>
+                </div>
+                <div class="folder-item" id="favorites-btn">
+                    <span class="folder-icon">❤️</span>
+                    <span class="folder-name">Favorites</span>
+                    <span class="folder-count" id="favorites-count">0</span>
+                </div>
             </div>
 
             <div class="sidebar-footer">
-                <button class="btn btn-primary" id="upload-note-btn">+ Upload</button>
+                <button class="btn btn-primary" id="upload-note-btn">📤 Upload HTML</button>
+                <button class="btn btn-ghost" id="export-btn">💾 Export All</button>
                 <button class="btn btn-ghost" id="settings-btn">⚙️ Settings</button>
-                <button class="btn btn-ghost" id="logout-btn">Sign Out</button>
+                <button class="btn btn-ghost" id="logout-btn">🚪 Sign Out</button>
             </div>
         </div>
 
-        <!-- Main Content -->
         <div class="main">
             <div class="header">
-                <div class="header-title" id="page-title">Library</div>
+                <div class="header-left">
+                    <div class="header-title" id="page-title">Library</div>
+                    <div class="header-stats" id="header-stats">0 notes • 0 folders</div>
+                </div>
                 <div class="header-actions">
+                    <button class="btn-icon" id="toggle-sidebar-btn" style="display: none;" title="Toggle Sidebar">☰</button>
                     <button class="btn-icon" id="fullscreen-btn" title="Fullscreen">⛶</button>
                 </div>
             </div>
 
             <div class="content">
-                <!-- Library View -->
                 <div id="library-view" class="view active">
-                    <div class="library-section">
-                        <div class="library-title">Library</div>
-                        <div class="library-subtitle" id="library-count">0 folders</div>
-                        <div class="library-grid" id="folders-grid"></div>
-                    </div>
-
-                    <div class="library-section" id="recent-section" style="display: none;">
-                        <div class="library-title">Recent</div>
-                        <div class="notes-list" id="recent-list"></div>
+                    <div class="library-grid" id="folders-grid"></div>
+                    <div id="empty-state" class="empty-state hidden">
+                        <div class="empty-icon">📭</div>
+                        <div class="empty-title">No Folders Yet</div>
+                        <div class="empty-message">Create your first folder to start organizing notes</div>
                     </div>
                 </div>
 
-                <!-- Folder View -->
                 <div id="folder-view" class="view">
-                    <div class="library-title" id="folder-title">Folder</div>
+                    <div style="margin-bottom: 24px;">
+                        <h2 class="header-title" id="folder-title">Folder</h2>
+                    </div>
                     <div class="notes-list" id="notes-grid"></div>
                 </div>
 
-                <!-- Editor View -->
                 <div id="editor-view" class="view">
                     <div class="editor-container">
                         <div class="editor-header">
-                            <div class="editor-title" id="editor-title">New Note</div>
-                            <div class="editor-actions">
-                                <button class="btn btn-ghost" id="close-editor-btn">Close</button>
-                                <button class="btn btn-primary" id="save-note-btn">Save</button>
+                            <input type="text" class="editor-title-input" id="editor-title" placeholder="Untitled Note" value="Untitled Note">
+                        </div>
+
+                        <div class="editor-toolbar">
+                            <div class="toolbar-group">
+                                <button class="toolbar-btn" onclick="document.execCommand('bold')" title="Bold">Bold</button>
+                                <button class="toolbar-btn" onclick="document.execCommand('italic')" title="Italic">Italic</button>
+                                <button class="toolbar-btn" onclick="document.execCommand('underline')" title="Underline">Underline</button>
+                            </div>
+                            <div class="toolbar-group">
+                                <button class="toolbar-btn" onclick="document.execCommand('insertUnorderedList')" title="List">List</button>
+                                <button class="toolbar-btn" onclick="document.execCommand('createLink', false, prompt('Enter URL:'))" title="Link">Link</button>
+                            </div>
+                            <div class="toolbar-group">
+                                <button class="toolbar-btn" onclick="document.execCommand('removeFormat')" title="Clear Formatting">Clear</button>
+                                <button class="toolbar-btn" id="toggle-fullscreen-editor" title="Fullscreen">Full</button>
                             </div>
                         </div>
-                        <div id="editor-area" class="editor-area" contenteditable="true" spellcheck="false"></div>
+
+                        <div id="editor-area" class="editor-area" contenteditable="true" spellcheck="true"></div>
+
+                        <div class="editor-footer">
+                            <div class="editor-status">
+                                <span id="word-count">0</span> words • <span id="char-count">0</span> characters
+                            </div>
+                            <div class="editor-actions">
+                                <button class="btn btn-ghost btn-small" id="close-editor-btn">Close</button>
+                                <button class="btn btn-primary btn-small" id="save-note-btn">Save Note</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Upload View -->
                 <div id="upload-view" class="view">
-                    <div class="library-title">Upload Note</div>
+                    <div style="margin-bottom: 28px;">
+                        <h2 class="header-title">Upload Note</h2>
+                    </div>
                     <div class="upload-container">
                         <div class="upload-zone" id="upload-zone">
-                            <div class="upload-icon">↑</div>
-                            <div class="upload-title">Click or drag & drop</div>
-                            <div class="upload-subtitle">Only .html files are accepted</div>
+                            <div class="upload-icon">📄</div>
+                            <div class="upload-title">Drop HTML files here</div>
+                            <div class="upload-subtitle">or click to browse</div>
+                            <div class="upload-hint">Supports .html files up to 10 MB</div>
                         </div>
                         <input type="file" id="upload-input" accept=".html">
                     </div>
@@ -1172,12 +1456,12 @@
     <div id="settings-modal" class="modal-overlay hidden">
         <div class="modal">
             <div class="modal-header">
-                <div class="modal-title">Settings</div>
+                <div class="modal-title">⚙️ Settings</div>
                 <button class="modal-close" id="close-settings-btn">×</button>
             </div>
 
             <div class="settings-group">
-                <label class="settings-label">Theme</label>
+                <label class="settings-label">🎨 Theme</label>
                 <div class="theme-buttons">
                     <button class="theme-btn active" data-theme="dark">Dark</button>
                     <button class="theme-btn" data-theme="light">Light</button>
@@ -1186,48 +1470,47 @@
             </div>
 
             <div class="settings-group">
-                <label class="settings-label">Font Size</label>
+                <label class="settings-label">📏 Font Size</label>
                 <div class="slider-container">
-                    <span style="font-size: 12px;">A</span>
+                    <span style="opacity: 0.7;">A</span>
                     <input type="range" id="font-size-slider" class="slider" min="12" max="24" value="16">
-                    <span style="font-size: 18px;">A</span>
+                    <span style="font-size: 18px; opacity: 0.7;">A</span>
                     <span class="slider-value" id="font-size-value">16px</span>
                 </div>
             </div>
 
             <div class="settings-group">
-                <label class="settings-label">Auto-save</label>
-                <div class="toggle">
-                    <span>Sync when notes change</span>
+                <label class="settings-label">💾 Auto-save</label>
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span style="font-size: 14px;">Automatically save changes</span>
                     <div class="toggle-switch active" id="autosave-toggle"></div>
                 </div>
             </div>
 
-            <div class="settings-group" style="border-top: 1px solid var(--border); padding-top: 20px; margin-top: 20px;">
-                <div style="font-size: 12px; color: var(--text-secondary);">
-                    ✓ <span id="sync-status">6 notes — 3/4/2026 7:43:46 PM</span>
+            <div class="settings-group">
+                <label class="settings-label">🔔 Notifications</label>
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span style="font-size: 14px;">Show notifications</span>
+                    <div class="toggle-switch active" id="notifications-toggle"></div>
                 </div>
             </div>
 
-            <div style="text-align: center; margin-top: 20px; font-size: 12px; color: var(--text-secondary);">
-                NoteZ<br><span id="version">v4.0</span>
+            <div style="border-top: 1.5px solid var(--border); padding-top: 20px; margin-top: 28px;">
+                <div style="font-size: 12px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 16px;">
+                    <div>✓ <span id="sync-status">5 notes synced • Last: just now</span></div>
+                </div>
+                <button class="btn btn-ghost" id="signout-btn" style="width: 100%;">Sign Out</button>
             </div>
-
-            <button class="btn btn-ghost" id="signout-btn" style="margin-top: 20px;">Sign Out</button>
         </div>
     </div>
 
-    <!-- Toast Container -->
     <div class="toast-container" id="toast-container"></div>
 
-    <!-- Service Worker Registration -->
     <script>
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('sw.js').catch(err => console.log('SW registration failed:', err));
+            navigator.serviceWorker.register('sw.js').catch(() => {});
         }
     </script>
-
-    <!-- Main App Script -->
-    <script src="app.js"></script>
+    <script src="app-advanced.js"></script>
 </body>
 </html>
