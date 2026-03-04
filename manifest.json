@@ -1,0 +1,89 @@
+{
+  "name": "NoteZ - Personal HTML Notes Workspace",
+  "short_name": "NoteZ",
+  "description": "A sleek, developer-centric, offline-first note-taking PWA with rich HTML support and cloud synchronization",
+  "start_url": "/NoteZ/",
+  "scope": "/NoteZ/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "theme_color": "#a900ff",
+  "background_color": "#0f0f11",
+  "categories": ["productivity"],
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%23a900ff' width='192' height='192'/><text x='50%' y='50%' font-size='120' font-weight='bold' fill='white' text-anchor='middle' dominant-baseline='central' font-family='sans-serif'>Z</text></svg>",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%23a900ff' width='192' height='192' rx='40'/><text x='50%' y='50%' font-size='120' font-weight='bold' fill='white' text-anchor='middle' dominant-baseline='central' font-family='sans-serif'>Z</text></svg>",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    },
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect fill='%23a900ff' width='512' height='512'/><text x='50%' y='50%' font-size='320' font-weight='bold' fill='white' text-anchor='middle' dominant-baseline='central' font-family='sans-serif'>Z</text></svg>",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 540 720'><rect fill='%230f0f11' width='540' height='720'/><text x='50%' y='200' font-size='48' font-weight='bold' fill='%23a900ff' text-anchor='middle' dominant-baseline='central' font-family='sans-serif'>NoteZ</text><text x='50%' y='300' font-size='20' fill='%23e8e8f0' text-anchor='middle' dominant-baseline='central' font-family='sans-serif'>Your Personal Note-Taking Workspace</text></svg>",
+      "sizes": "540x720",
+      "type": "image/svg+xml",
+      "form_factor": "narrow"
+    },
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1280 720'><rect fill='%230f0f11' width='1280' height='720'/><rect fill='%231a1a1f' width='260' height='720'/><text x='640' y='200' font-size='48' font-weight='bold' fill='%23a900ff' text-anchor='middle' dominant-baseline='central' font-family='sans-serif'>NoteZ</text><text x='640' y='300' font-size='20' fill='%23e8e8f0' text-anchor='middle' dominant-baseline='central' font-family='sans-serif'>Organize • Create • Share</text></svg>",
+      "sizes": "1280x720",
+      "type": "image/svg+xml",
+      "form_factor": "wide"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Create New Note",
+      "short_name": "New Note",
+      "description": "Create a new note in NoteZ",
+      "url": "/NoteZ/?action=new-note",
+      "icons": [
+        {
+          "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%23a900ff' width='192' height='192' rx='40'/><text x='50%' y='50%' font-size='80' font-weight='bold' fill='white' text-anchor='middle' dominant-baseline='central'>+</text></svg>",
+          "sizes": "192x192",
+          "type": "image/svg+xml",
+          "purpose": "any maskable"
+        }
+      ]
+    },
+    {
+      "name": "Upload Note",
+      "short_name": "Upload",
+      "description": "Upload an HTML note to NoteZ",
+      "url": "/NoteZ/?action=upload",
+      "icons": [
+        {
+          "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%234d9fff' width='192' height='192' rx='40'/><text x='50%' y='50%' font-size='100' font-weight='bold' fill='white' text-anchor='middle' dominant-baseline='central'>↑</text></svg>",
+          "sizes": "192x192",
+          "type": "image/svg+xml",
+          "purpose": "any maskable"
+        }
+      ]
+    }
+  ],
+  "share_target": {
+    "action": "/NoteZ/share",
+    "method": "POST",
+    "enctype": "multipart/form-data",
+    "params": {
+      "files": [
+        {
+          "name": "htmlfile",
+          "accept": [".html", "text/html"]
+        }
+      ]
+    }
+  }
+}
