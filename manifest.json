@@ -2,8 +2,8 @@
   "name": "NoteZ - Personal HTML Notes Workspace",
   "short_name": "NoteZ",
   "description": "A sleek, developer-centric, offline-first note-taking PWA with rich HTML support and cloud synchronization",
-  "start_url": "/NoteZ/",
-  "scope": "/NoteZ/",
+  "start_url": "/Notee/",
+  "scope": "/Notee/",
   "display": "standalone",
   "orientation": "portrait-primary",
   "theme_color": "#a900ff",
@@ -48,7 +48,7 @@
       "name": "Create New Note",
       "short_name": "New Note",
       "description": "Create a new note in NoteZ",
-      "url": "/NoteZ/?action=new-note",
+      "url": "/Notee/?action=new-note",
       "icons": [
         {
           "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%23a900ff' width='192' height='192' rx='40'/><text x='50%' y='50%' font-size='80' font-weight='bold' fill='white' text-anchor='middle' dominant-baseline='central'>+</text></svg>",
@@ -62,7 +62,7 @@
       "name": "Upload Note",
       "short_name": "Upload",
       "description": "Upload an HTML note to NoteZ",
-      "url": "/NoteZ/?action=upload",
+      "url": "/Notee/?action=upload",
       "icons": [
         {
           "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%234d9fff' width='192' height='192' rx='40'/><text x='50%' y='50%' font-size='100' font-weight='bold' fill='white' text-anchor='middle' dominant-baseline='central'>↑</text></svg>",
@@ -74,7 +74,7 @@
     }
   ],
   "share_target": {
-    "action": "/NoteZ/share",
+    "action": "/Notee/share",
     "method": "POST",
     "enctype": "multipart/form-data",
     "params": {
